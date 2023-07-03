@@ -1,9 +1,9 @@
-name: Deploy to Prod
+name: Verify Deployment
 on:
   pull_request:
     types:
       - closed
-    branches: [main]
+    branches: [sandbox]
 jobs:
   static-code-analysis:
     if: github.event.pull_request.merged == true
@@ -68,10 +68,10 @@ jobs:
       - name: Populate text file with prod url
         shell: bash
         run: |
-          echo ${{ secrets.SFDX_PROD_URL }} > ./SFDX_PROD_URL.txt
+          echo ${{ secrets.SANDBOX_URL }} > ./SFDX_SANDBOX_URL.txt
 
       - name: Authenticate into production org
-        run: sfdx auth:sfdxurl:store -f ./SFDX_PROD_URL.txt -s -a prod
+        run: sfdx auth:sfdxurl:store -f ./SFDX_SANDBOX_URL.txt -s -a prod
 
       - name: Create package.xml that contains all metadata that was changed between source branch and target branch
         run: |
@@ -81,7 +81,7 @@ jobs:
       - name: Deploy changed metadata
         run: |
           mkdir deploy-results
-          sf force source deploy --manifest ./changed-sources/package/package.xml --target-org prod --testlevel RunLocalTests --resultsdir ./deploy-results --coverageformatters text
+          sf force source deploy --manifest ./changed-sources/package/package.xml --target-org prod --testlevel RunLocalTests --resultsdir ./deploy-results --checkonly --coverageformatters html
       
 
       - name: Upload deploy result as artifact
