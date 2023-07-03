@@ -16,7 +16,6 @@ const BROKER_FIELDS = [
     EMAIL_FIELD
 ];
 
-
 export default class BrokerCard extends NavigationMixin(LightningElement) {
     @api recordId;
 
