@@ -88,4 +88,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: deploy-results
-          path: ./deploy-results
+          path: deploy-results
