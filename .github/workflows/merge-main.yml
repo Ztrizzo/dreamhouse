@@ -64,9 +64,11 @@ jobs:
       - name: Authenticate into production org
         run: sfdx auth:sfdxurl:store -f ./SFDX_PROD_URL.txt -s -a prod
 
-
       - name: "Create delta packages for new, modified or deleted metadata"
         run: |
           mkdir changed-sources
-          sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/
+          sfdx sgd:source:delta --to ${{ github.base_ref }} --from ${{ github.base_ref }} --output changed-sources/ --generate-delta --source force-app/
+
+      - name: Output diff
+        run: cat ./changed-sources/package/package.xml
 
