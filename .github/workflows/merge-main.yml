@@ -3,7 +3,6 @@ on:
     pull_request:
         types:
             - closed
-
 jobs:
     static-code-analysis:
         if: github.event.pull_request.merged == true
