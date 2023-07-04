@@ -83,7 +83,6 @@ jobs:
           mkdir deploy-results
           sf force source deploy --manifest ./changed-sources/package/package.xml --target-org prod --testlevel RunLocalTests --resultsdir ./deploy-results --coverageformatters text
       
-
       - name: Upload deploy result as artifact
         uses: actions/upload-artifact@v3
         with:
