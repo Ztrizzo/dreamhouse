@@ -4,4 +4,5 @@ export default class Example extends LightningElement {
   connectedCallback(){
     console.log('test');
   }
+  
 }
