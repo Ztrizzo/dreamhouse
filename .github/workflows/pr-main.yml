@@ -1,7 +1,7 @@
-name: Verify Deployment
+name: Deploy to Prod
 on:
   pull_request:
-    branches: [sandbox]
+    branches: [main]
 jobs:
   static-code-analysis:
     runs-on: ubuntu-latest
@@ -65,10 +65,10 @@ jobs:
       - name: Populate text file with prod url
         shell: bash
         run: |
-          echo ${{ secrets.SANDBOX_URL }} > ./SFDX_SANDBOX_URL.txt
+          echo ${{ secrets.SFDX_PROD_URL }} > ./SFDX_PROD_URL.txt
 
       - name: Authenticate into production org
-        run: sfdx auth:sfdxurl:store -f ./SFDX_SANDBOX_URL.txt -s -a prod
+        run: sfdx auth:sfdxurl:store -f ./SFDX_PROD_URL.txt -s -a prod
 
       - name: Create package.xml that contains all metadata that was changed between source branch and target branch
         run: |
@@ -78,7 +78,7 @@ jobs:
       - name: Deploy changed metadata
         run: |
           mkdir deploy-results
-          sf force source deploy --manifest ./changed-sources/package/package.xml --target-org prod --testlevel RunLocalTests --resultsdir ./deploy-results --checkonly --coverageformatters html
+          sf force source deploy --manifest ./changed-sources/package/package.xml --target-org prod --testlevel RunLocalTests --resultsdir ./deploy-results --coverageformatters text --checkonly
       
       - name: Upload deploy result as artifact
         uses: actions/upload-artifact@v3
