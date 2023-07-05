@@ -73,7 +73,7 @@ jobs:
       - name: Create package.xml that contains all metadata that was changed between source branch and target branch
         run: |
           mkdir changed-sources
-          sfdx sgd:source:delta --to ${{ github.ref }} --from origin/main --output changed-sources/ --generate-delta --source force-app/
+          sfdx sgd:source:delta --to ${{ github.ref_name }} --from origin/main --output changed-sources/ --generate-delta --source force-app/
 
       - name: Deploy changed metadata
         run: |
